@@ -367,7 +367,7 @@ class Ec2Inventory(object):
             if e.error_code == 'AuthFailure':
                 error = self.get_auth_error_message()
             else:
-                backend = 'Eucalyptus' if self.eucalyptus else 'AWS' 
+                backend = 'Eucalyptus' if self.eucalyptus else 'AWS'
                 error = "Error connecting to %s backend.\n%s" % (backend, e.message)
             self.fail_with_error(error)
 
@@ -404,7 +404,7 @@ class Ec2Inventory(object):
             errors.append(" - No Boto config found at any expected location '%s'" % ', '.join(boto_paths))
 
         return '\n'.join(errors)
-        
+
     def fail_with_error(self, err_msg):
         '''log an error to std err for ansible-playbook to consume and exit'''
         sys.stderr.write(err_msg)
@@ -508,7 +508,7 @@ class Ec2Inventory(object):
                     if self.nested_groups:
                         self.push_group(self.inventory, 'security_groups', key)
             except AttributeError:
-                self.fail_with_error('\n'.join(['Package boto seems a bit older.', 
+                self.fail_with_error('\n'.join(['Package boto seems a bit older.',
                                             'Please upgrade boto >= 2.3.0.']))
 
         # Inventory: Group by tag keys
@@ -602,7 +602,7 @@ class Ec2Inventory(object):
                         self.push_group(self.inventory, 'security_groups', key)
 
             except AttributeError:
-                self.fail_with_error('\n'.join(['Package boto seems a bit older.', 
+                self.fail_with_error('\n'.join(['Package boto seems a bit older.',
                                             'Please upgrade boto >= 2.3.0.']))
 
 
