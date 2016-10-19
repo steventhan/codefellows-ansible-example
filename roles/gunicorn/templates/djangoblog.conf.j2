@@ -8,7 +8,7 @@ setuid ubuntu
 script
   cd {{ django_home}}
   . venv/bin/activate
-  export DEBUG=True
+  export DEBUG=False
   export SECRET_KEY={{ secret_key }}
   export EMAIL_HOST_PASSWORD={{ email_password }}
   export DATABASE_URL={{ db_url }}
