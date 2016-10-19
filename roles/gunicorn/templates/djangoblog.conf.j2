@@ -6,7 +6,6 @@ stop on runlevel [016]
 respawn
 setuid nobody
 setgid nogroup
-chdir {{ django_home }}
-env DJANGO_SETTINGS_MODULE=mysite.production
-env DATABASE_URL={{ db_url }}
-exec gunicorn -b 127.0.0.1:8000 -w 4 mysite.wsgi --error-logfile /tmp/gunicorn-error.log
+chdir {{ django_home }}/imagersite
+exec export DEBUG=False
+exec gunicorn -b 127.0.0.1:8000 imagersite.wsgi

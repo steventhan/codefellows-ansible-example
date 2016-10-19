@@ -1,4 +1,4 @@
-keypair: david
+keypair: django-keys
 security_group: launch-wizard-1
 instance_type: t2.micro
 ami: ami-d732f0b7
