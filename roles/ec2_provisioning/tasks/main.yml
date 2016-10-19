@@ -8,7 +8,7 @@
   register: ec2_pre_launch
 
 - name: calculate number of instances to provision
-  set_fact: 
+  set_fact:
     count: "{{ num_instances - ec2_pre_launch.instances|length }}"
 
 - name: Launch EC2 Instance
@@ -57,7 +57,16 @@
     groupname: launched
   with_items: ec2_post_launch.instances
 
-- name: debug
-  debug: var=tag_Name_ansible-built
-
-
+- name: Launch RDS instance
+  local_action:
+    module: rds
+    command: create
+    instance_name: postgres-db
+    db_name: "{{ db_name }}"
+    db_engine: postgres
+    size: 5
+    region: "{{ region }}"
+    instance_type: db.t2.micro
+    username: psql_admin
+    password: "{{ db_password }}"
+  register: rds

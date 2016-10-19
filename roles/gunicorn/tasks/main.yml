@@ -2,7 +2,10 @@
 
 - name: Install Requirements
   sudo: yes
-  pip: name=gunicorn state=present
+  pip:
+    virtualenv: "{{ django_venv }}"
+    name: gunicorn
+    state: present
 
 - name: Create gunicorn Upstart Job
   sudo: yes

@@ -1,0 +1,5 @@
+---
+
+db_password: "{{ vault_db_password }}"
+secret_key: "{{ vault_secret_key }}"
+email_password: "{{ vault_email_password }}"
