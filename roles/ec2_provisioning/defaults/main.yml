@@ -1,11 +1,11 @@
-keypair: Steven
-security_group: launch-wizard-2
+keypair: django-keys
+security_group: launch-wizard-1
 instance_type: t2.micro
-ami: ami-5189a661
-vpc_subnet_id: subnet-86d9b2f1
+ami: ami-d732f0b7
+vpc_subnet_id: subnet-e4142480
 region: us-west-2
 instance_tags: {"Name": "ansible-built"}
 root_ebs_size: 8
 zone: us-west-2a
-instance_profile_name: steventhan93
+instance_profile_name: what_is_this_for
 num_instances: 1
