@@ -1,11 +1,11 @@
-keypair: django-keys
-security_group: launch-wizard-1
+keypair: ec2
+security_group: ec-security-group
 instance_type: t2.micro
 ami: ami-d732f0b7
-vpc_subnet_id: subnet-e4142480
+vpc_subnet_id: subnet-c38b82a7
 region: us-west-2
-instance_tags: {"Name": "ansible-built"}
+instance_tags: {"Name": "django-imager"}
 root_ebs_size: 8
-zone: us-west-2a
-instance_profile_name: what_is_this_for
+zone: us-west-2b
+instance_profile_name: steventhan
 num_instances: 1
