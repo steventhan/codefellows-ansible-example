@@ -6,54 +6,58 @@
   with_items:
     - build-essential
     - python-dev
+    - python3.4-dev
     - python-pip
     - postgresql-client
     - libpq-dev
-    - python-pip
     - python-psycopg2
     - git
-    - python3.4-venv
+    - python-virtualenv
     - libjpeg8-dev
+    - libjpeg-dev
 
 - name: Clone Django Repository
-  git: repo=https://github.com/steventhan/django-imager.git dest={{ django_home }} force=yes
+  git: repo={{ django_repo }} dest={{ django_home }} force=yes version=wrap-up
 
 - name: Install Python Dependencies
-  sudo: yes
   pip:
-    virtualenv: ~/checkout/ENV
+    virtualenv_python: python3.4
+    virtualenv: "{{ django_venv }}"
     state: present
     requirements: "{{ django_home }}/requirements.txt"
 
-# - name: Get DB Hostvars
-#   set_fact:
-#     db_host: "{{ hostvars[groups[rds_db_instance][0]] }}"
+- name: Get DB Hostvars
+  vars:
+    rds_url: "{{ hostvars[ansible_host].groups.rds[0] }}"
+  set_fact:
+    db_host: "{{ hostvars[rds_url] }}"
 
-# - name: Get DB Password
-#   include_vars: secrets.yml
+- name: Set DB URL
+  set_fact:
+    db_url: "{{ db_host.ec2_engine }}://{{ db_host.ec2_master_username }}:{{ db_password }}@{{ db_host.ec2__address }}:{{ db_host.ec2__port }}/{{ db_host.ec2_DBName}}"
 
-
-# - name: Set DB URL
-#   set_fact: 
-#     db_url: "{{ db_host.ec2_engine }}://{{ db_host.ec2_master_username }}:{{ db_password }}@{{ db_host.ec2__address }}:{{ db_host.ec2__port }}/{{ db_host.ec2_DBName }}"
-- name: Django home
-  debug: var=django_home
-
+- name: debug db_host
+  debug: var=db_url
 
 - name: Run Migrations
-  # environment:
-    # DATABASE_URL: "{{ db_url }}"
-    # DATABASE_URL: db.sqlite3
+  environment:
+    DATABASE_URL: "{{ db_url }}"
+    DEBUG: "False"
+    EMAIL_HOST_PASSWORD: "{{ email_password }}"
+    SECRET_KEY: "{{ secret_key }}"
   django_manage:
+    virtualenv: "{{ django_venv }}"
     app_path: "{{ django_home }}/imagersite"
-    #settings: mysite.production
     command: migrate
 
 - name: Collect Static Files
-  # environment:
-  #   DATABASE_URL: "{{ db_url }}"
+  environment:
+    DATABASE_URL: "{{ db_url }}"
+    DEBUG: "False"
+    EMAIL_HOST_PASSWORD: "{{ email_password }}"
+    SECRET_KEY: "{{ secret_key }}"
   sudo: yes
   django_manage:
+    virtualenv: "{{ django_venv }}"
     app_path: "{{ django_home }}/imagersite"
-    #settings: mysite.production
     command: collectstatic
